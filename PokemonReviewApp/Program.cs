@@ -11,6 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddTransient<Seed>(); // seeder, odmah na pocetku je dependancy injection
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 // dependancy injection
 builder.Services.AddScoped<IPokemonRepository, PokemonRepository>();
 

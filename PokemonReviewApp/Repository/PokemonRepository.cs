@@ -13,12 +13,35 @@ namespace PokemonReviewApp.Repository
             _context = context;
         }
 
+        public Pokemon GetPokemon(int id)
+        {
+            return _context.Pokemon.Where(p => p.Id == id).FirstOrDefault();
+        }
+
+        public Pokemon GetPokemon(string name)
+        {
+            return _context.Pokemon.Where(p => p.Name.ToLower() == name.ToLower()).FirstOrDefault();
+        }
+
+        public decimal GetPokemonRating(int pokeId)
+        {
+            var review = _context.Reviews.Where(r => r.Id == pokeId).ToList();
+            if (review.Count() <= 0) {
+                return 0;
+            }
+            return ((decimal)review.Sum(r => r.Rating)/ review.Count());
+        }
+
         public ICollection<Pokemon> GetPokemons() 
         { 
             return _context.Pokemon.OrderBy(p => p.Id).ToList(); // be explicit when returning data
         }
-        // return ICollection list ordered by id
 
+        public bool PokemonExists(int pokeId)
+        {
+            return _context.Pokemon.Any(p => p.Id == pokeId);
+        }
+        // return ICollection list ordered by id
 
 
     }
