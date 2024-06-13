@@ -14,6 +14,8 @@ builder.Services.AddTransient<Seed>(); // seeder, odmah na pocetku je dependancy
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 // dependancy injection
 builder.Services.AddScoped<IPokemonRepository, PokemonRepository>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<ICountryRepository, CountryRepository>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
