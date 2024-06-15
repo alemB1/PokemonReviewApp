@@ -21,13 +21,15 @@ namespace PokemonReviewApp.Controllers
 
         [HttpGet]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Pokemon>))]
-        public IActionResult GetPokemons() {
-
-            var pokemons = _mapper.Map<List<PokemonDto>>(_pokemonRepository.GetPokemons());
+        public IActionResult GetPokemons([FromQuery] PokemonParameters pokemonParameters) {
+            
+            var pokemons = _mapper.Map<List<PokemonDto>>(_pokemonRepository.GetPokemons(pokemonParameters));
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
             return Ok(pokemons);
+            
+
         }
 
         [HttpGet("{pokeId}")]

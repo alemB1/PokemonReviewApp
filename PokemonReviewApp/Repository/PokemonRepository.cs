@@ -32,9 +32,11 @@ namespace PokemonReviewApp.Repository
             return ((decimal)review.Sum(r => r.Rating)/ review.Count());
         }
 
-        public ICollection<Pokemon> GetPokemons() 
+        public ICollection<Pokemon> GetPokemons(PokemonParameters pokemonParameters) 
         { 
-            return _context.Pokemon.OrderBy(p => p.Id).ToList(); // be explicit when returning data
+            return _context.Pokemon.OrderBy(p => p.Id)
+                .Skip((pokemonParameters.PageNumber -1)* pokemonParameters.PageSize)
+                .Take(pokemonParameters.PageSize).ToList(); // Implemented pagination for pokemons controller
         }
 
         public bool PokemonExists(int pokeId)
