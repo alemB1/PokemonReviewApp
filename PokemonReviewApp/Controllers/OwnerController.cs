@@ -12,12 +12,14 @@ namespace PokemonReviewApp.Controllers
     public class OwnerController:Controller
     {
         private readonly IOwnerRepository _ownerRepository;
+        private readonly ICountryRepository _countryRepository;
         private readonly IMapper _mapper;
 
-        public OwnerController(IOwnerRepository ownerRepository, IMapper mapper)
+        public OwnerController(IOwnerRepository ownerRepository,ICountryRepository countryRepository ,IMapper mapper)
         {
             _ownerRepository = ownerRepository;
             _mapper = mapper;
+            _countryRepository = countryRepository;
         }
 
         [HttpGet]
@@ -63,6 +65,37 @@ namespace PokemonReviewApp.Controllers
                 return BadRequest(ModelState);
 
             return Ok(owner);
+        }
+
+        [HttpPost]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public IActionResult CreateOwner([FromQuery] int countryId, [FromBody] OwnerDto ownerCreate) {
+            if (ownerCreate == null)
+                return BadRequest(ModelState);
+
+            var owners = _ownerRepository.GetOwners()
+                .Where(c => c.LastName.Trim().ToUpper() == ownerCreate.LastName.TrimEnd()
+                .ToUpper()).FirstOrDefault();
+
+            if (owners != null) {
+                ModelState.AddModelError("", "Owner already exists");
+                return StatusCode(422, ModelState);
+            }
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var ownerMap = _mapper.Map<Owner>(ownerCreate); 
+            // moram dodati vezu sa drugom tabelom jer je mtm
+            ownerMap.Country = _countryRepository.GetCountry(countryId);
+
+            if (!_ownerRepository.CreateOwner(ownerMap)) {
+                ModelState.AddModelError("", "Something went wrong while saving");
+                return StatusCode(500, ModelState);
+            }
+
+            return Ok("Successfully created");
         }
     }
 }

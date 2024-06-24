@@ -9,11 +9,18 @@ namespace PokemonReviewApp.Helper
         public MappingProfiles()
         {
             CreateMap<Pokemon, PokemonDto>();
+            CreateMap<PokemonDto, Pokemon>();
             CreateMap<Category, CategoryDto>();
+            CreateMap<CategoryDto, Category>(); // kad post koristim moram dto koristit da bude ispravan input
             CreateMap<Country, CountryDto>();
+            CreateMap<CountryDto, Country>();
             CreateMap<Owner, OwnerDto>();
+            CreateMap<OwnerDto, Owner>();
             CreateMap<Review, ReviewDto>();
+            CreateMap<ReviewDto, Review>();
             CreateMap<Reviewer, ReviewerDto>();
+            CreateMap<ReviewerDto,Reviewer>();
+
         }
     }
 }
