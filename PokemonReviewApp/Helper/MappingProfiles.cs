@@ -11,7 +11,7 @@ namespace PokemonReviewApp.Helper
             CreateMap<Pokemon, PokemonDto>();
             CreateMap<PokemonDto, Pokemon>();
             CreateMap<Category, CategoryDto>();
-            CreateMap<CategoryDto, Category>(); // kad post koristim moram dto koristit da bude ispravan input
+            CreateMap<CategoryDto, Category>(); // kad post/update koristim moram dto koristit da bude ispravan input
             CreateMap<Country, CountryDto>();
             CreateMap<CountryDto, Country>();
             CreateMap<Owner, OwnerDto>();

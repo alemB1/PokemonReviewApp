@@ -11,6 +11,7 @@ namespace PokemonReviewApp.Interfaces
         decimal GetPokemonRating(int pokeId);
         bool PokemonExists(int pokeId);
         bool CreatePokemon(int ownerId, int categoryId, Pokemon pokemon); // we have to add these parameters because of the external relationships
+        bool UpdatePokemon(int ownerId, int categoryId, Pokemon pokemon);
         bool Save();
     }
 }
