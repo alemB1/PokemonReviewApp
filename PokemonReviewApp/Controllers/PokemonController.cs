@@ -143,5 +143,35 @@ namespace PokemonReviewApp.Controllers
             return NoContent();
         }
 
+
+        [HttpDelete("{pokeId}")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(202)]
+        [ProducesResponseType(404)]
+        public IActionResult DeletePokemon(int pokeId) {
+            if (!_pokemonRepository.PokemonExists(pokeId)) {
+                return NotFound();
+            }
+
+            var reviewsToDelete = _reviewRepository.GetReviewsOfAPokemon(pokeId);
+            var pokemonToDelete = _pokemonRepository.GetPokemon(pokeId);
+            // istrazi dodatno ovde brisanje veza
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+
+            if (!_reviewRepository.DeleteReviews(reviewsToDelete.ToList()))
+            {
+                ModelState.AddModelError("", "Something went wrong when deleting reviews");
+            }
+
+            if (!_pokemonRepository.DeletePokemon(pokemonToDelete))
+            {
+                ModelState.AddModelError("", "Something went wrong deleting owner");
+            }
+
+            return NoContent();
+        }
+
     }
 }
